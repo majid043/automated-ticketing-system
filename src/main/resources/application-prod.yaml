@@ -1,0 +1,16 @@
+spring:
+  profiles: prod
+
+log4j2:
+  config: config/log4j2.xml
+  
+logging:
+  config: ${server.contextPath}/${log4j2.config}
+  level:
+    root: WARN
+    com.resturant.automatedticketingsystem: INFO
+    
+server:
+  contextPath: src/main/resources
+  port : 8080
+   

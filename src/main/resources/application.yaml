@@ -1,0 +1,23 @@
+spring:
+  profiles:
+    active: @spring.profiles.active@
+  datasource:
+    url: jdbc:h2:mem:ticketingsystem
+    driverClassName: org.h2.Driver
+    username: majid
+    password: 
+  jpa: 
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate: 
+      ddl-auto: none
+  h2: 
+    console: 
+      enable: true
+  liquibase: 
+    enabled: true
+    change-log: classpath:dbchangelog/changelog-master.xml
+    
+springdoc:
+  api-docs.path: /api-docs
+  swagger-ui.path: /documentation.html  
+  

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration monitorInterval="600" name="AutomatedTicketingSystem">
+	<Properties>
+		<Property name="logsFolder">logs/</Property>
+	    <property name="logsBackupFolder">backup</property>
+	    <property name="pattern">[%d{MMM dd, yyyy HH:mm:ss,SSS}][%p][%t][%c{1}] - %m%n%ex</property>
+		<property name="logsFilePattern">yyyy-MM-dd-HH</property>
+		<property name="logsBackupPattern">yyyy-MM-dd</property>
+		<Property name="rolloverInterval">6</Property>	<!-- Rollover every 6 hours. Because logsFilePattern is till hours-->
+		<Property name="ws-file">ws.log</Property>
+		<Property name="root-file">root.log</Property>
+	</Properties>
+	
+	<Appenders>
+		<RollingFile name="appender-ws-file" fileName="${logsFolder}/${ws-file}" append="true" immediateFlush="false" 
+		bufferSize="1048576" filePattern="${logsFolder}/${logsBackupFolder}/%d{${logsBackupPattern}}/${ws-file}-%d{${logsFilePattern}}.log.gz">
+			<PatternLayout pattern="${pattern}"/>
+			<Policies>
+				<OnStartupTriggeringPolicy /><TimeBasedTriggeringPolicy interval="${rolloverInterval}" modulate="true"/> 
+			</Policies>
+		</RollingFile>
+		<RollingFile name="appender-root-file" fileName="${logsFolder}/${root-file}" append="true" immediateFlush="false" 
+			bufferSize="1048576" filePattern="${logsFolder}/${logsBackupFolder}/%d{${logsBackupPattern}}/${root-file}-%d{${logsFilePattern}}.log.gz">
+			<PatternLayout pattern="${pattern}"/>
+			<Policies>
+				<OnStartupTriggeringPolicy /><TimeBasedTriggeringPolicy interval="${rolloverInterval}" modulate="true"/> 
+			</Policies>
+		</RollingFile>
+		
+		<Async name="WS" includeLocation="false">
+			<AppenderRef ref="appender-ws-file" />
+		</Async>
+		<Async name="rootLog" includeLocation="false">
+			<AppenderRef ref="appender-root-file" />
+		</Async>
+	</Appenders>
+	
+	<Loggers>
+		<asyncLogger name="com.resturant.automatedticketingsystem" additivity="false" includeLocation="false">
+			<AppenderRef ref="WS" />
+		</asyncLogger>
+		<asyncRoot additivity="false" includeLocation="false">
+			<AppenderRef ref="rootLog" />
+		</asyncRoot>
+	</Loggers>
+</Configuration>
